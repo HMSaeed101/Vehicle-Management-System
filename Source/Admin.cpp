@@ -25,9 +25,9 @@ void Admin::showMenu()
 {
     cout << "\n";
     cout << Color::BOLD << Color::RED;
-    cout << "+----------------------------------------------------------+\n";
+    cout << "+==========================================================+\n";
     cout << "|                  ADMIN CONTROL PANEL                     |\n";
-    cout << "+----------------------------------------------------------+\n" << Color::RESET;
+    cout << "+==========================================================+\n" << Color::RESET;
     cout << "|  Logged in as : " << left << setw(40)
             << (getName() + " (ID: " + getID() + ")") << "|\n";
     cout << "+----------------------------------------------------------+\n";
@@ -53,7 +53,7 @@ void Admin::addVehicle(vector<Vehicle*>& fleet)
     int year, capacity;
 
     cout << "\n" << Color::BOLD << Color::BLUE << "========= ADD NEW VEHICLE =========" << Color::RESET << endl;
-    
+
     type = InputHandler::getChar("Categories (E: Economy, L: Luxury, S: SUV, V: Van/Bus)", "ELSV", true);
     if (type == '0') return;
 
@@ -115,7 +115,7 @@ void Admin::removeVehicle(vector<Vehicle*>& fleet)
     cout << "|                   REMOVE VEHICLE FROM FLEET              |\n";
     cout << "+----------------------------------------------------------+\n" << Color::RESET;
     cout << "  Please enter the unique ID of the vehicle to delete:\n\n";
-    
+
     id = InputHandler::getString("  > Vehicle ID to Remove: ", false, true);
     if (id == InputHandler::CANCEL_STR) return;
 
@@ -147,16 +147,16 @@ void Admin::salePurchaseModule(vector<Vehicle*>& fleet, vector<User*>& users, Fi
     int choice = 0;
     cout << "\n";
     cout << Color::BOLD << Color::CYAN;
-    cout << "+----------------------------------------------------------+\n";
+    cout << "+==========================================================+\n";
     cout << "|                SALE / PURCHASE MODULE                    |\n";
-    cout << "+----------------------------------------------------------+\n" << Color::RESET;
+    cout << "+==========================================================+\n" << Color::RESET;
     cout << "|                                                          |\n";
     cout << "|   [1]   Sell Vehicle                                     |\n";
     cout << "|   [2]   Purchase Vehicle                                 |\n";
     cout << "|   [3]   Back to Admin Menu                               |\n";
     cout << "|                                                          |\n";
     cout << Color::CYAN << "+----------------------------------------------------------+\n\n" << Color::RESET;
-    
+
     choice = InputHandler::getInt("Selection: ", 1, 3);
 
 
@@ -222,11 +222,11 @@ void Admin::salePurchaseModule(vector<Vehicle*>& fleet, vector<User*>& users, Fi
 
         cout << "\n";
         cout << Color::BOLD << Color::BLUE;
-        cout << "+----------------------------------------------------------+\n";
+        cout << "+==========================================================+\n";
         cout << "|                VEHICLE ACQUISITION & PURCHASE            |\n";
-        cout << "+----------------------------------------------------------+\n" << Color::RESET;
+        cout << "+==========================================================+\n" << Color::RESET;
         cout << "  Enter procurement details below:\n\n";
-        
+
         supplier = InputHandler::getString(Color::INFO + "  > Supplier Name    : " + Color::RESET, true, true);
         if (supplier == InputHandler::CANCEL_STR) return;
 
@@ -319,7 +319,7 @@ void Admin::viewAllRecords(const vector<Vehicle*>& fleet, const vector<User*>& u
         for (Vehicle* v : fleet)
         {
             string coloredStatus = (v->getStatus() == VehicleStatus::Available ? Color::GREEN + "Available " + Color::RESET :
-                                   (v->getStatus() == VehicleStatus::Rented    ? Color::RED + "Rented    " + Color::RESET : Color::YELLOW + "Sold      " + Color::RESET));
+                                (v->getStatus() == VehicleStatus::Rented    ? Color::RED + "Rented    " + Color::RESET : Color::YELLOW + "Sold      " + Color::RESET));
 
             cout << "| " << left << setw(9)  << v->getID()
                 << "| " << left << setw(25) << v->getModel()
@@ -332,8 +332,12 @@ void Admin::viewAllRecords(const vector<Vehicle*>& fleet, const vector<User*>& u
 
     cout << "\n";
 
-    cout << Color::MAGENTA << "+------------------- REGISTERED USERS ---------------------+\n" << Color::RESET;
-    cout << "| Total Users    : " << left << setw(41) << users.size() << "|\n";
+    cout << Color::MAGENTA;
+    cout << "+==========================================================+";
+    cout << "                       REGISTERED USERS                     ";
+    cout << "+==========================================================+";
+    cout << Color::RESET;
+    cout << "| Total Users    : " << left << setw(41) << users.size() << "|" << endl;
 
     if (users.empty())
     {

@@ -23,17 +23,20 @@ void Customer::showMenu()
     cout << "\n";
     cout << Color::BOLD << Color::GREEN;
     cout << "+==========================================================+\n";
+    cout << "|                                                          |\n";
     cout << "|                   CUSTOMER DASHBOARD                     |\n";
+    cout << "|                                                          |\n";
     cout << "+==========================================================+\n" << Color::RESET;
     cout << "| Welcome, " << Color::CYAN << left << setw(48) << getName() << Color::RESET << "|\n";
     cout << Color::BOLD << Color::GREEN << "+----------------------------------------------------------+\n" << Color::RESET;
-
+    cout << "|                                                          |\n";
     cout << "|   [1]   Search for a Vehicle                             |\n";
     cout << "|   [2]   Rent a Vehicle                                   |\n";
     cout << "|   [3]   Return a Vehicle                                 |\n";
     cout << "|   [4]   Plan a Trip                                      |\n";
     cout << "|   [5]   View My Rental History                           |\n";
     cout << "|   [6]   Logout                                           |\n";
+    cout << "|                                                          |\n";
     cout << Color::BOLD << Color::GREEN << "+----------------------------------------------------------+\n" << Color::RESET;
 }
 
