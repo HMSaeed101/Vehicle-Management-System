@@ -1,9 +1,5 @@
 A|A001|admin|Admin|0300-1122334|1111
-C|C001|saad|Saad|0311-5566778|1111
 C|C002|salman|Salman|0322-9900112|1111
 C|C003|saeed|Saeed|0321-9798860|hmsaeed
-C|C454|hafid|Hafid Mughal|0342-7676543|hafid
 C|C005|waseem|Arham|0344-7678463|waseem
 C|C009|aamina|aamina|864534234|aamina
-C|C909|taha|Taha Imran Liaqat|234567|taha
-C|C006|hamid|Hamid Ahmed|782345|hamid

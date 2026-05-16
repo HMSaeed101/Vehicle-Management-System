@@ -4,6 +4,8 @@
 #include "FileHandler.h"
 #include "Colors.h"
 #include "InputHandler.h"
+#include "Validator.h"
+#include "Constants.h"
 
 #include <iostream>
 #include <iomanip>
@@ -16,8 +18,6 @@ Customer::Customer(string id, string username, string name, string phone, string
 /**
 * @brief Displays the Customer-specific console menu.
 */
-
-
 void Customer::showMenu()
 {
     cout << "\n";
@@ -41,50 +41,42 @@ void Customer::showMenu()
 }
 
 /**
-* @brief Displays the customer's past rental transactions.
+* @brief Displays the customer's past rental transactions in a tabular view.
 */
-
 void Customer::viewRentalHistory()
 {
-    cout << Color::BOLD << Color::GREEN;
-    cout << "\n";
-    cout << "+==========================================================+\n";
-    cout << "|                 YOUR RENTAL HISTORY                      |\n";
-    cout << "+==========================================================+\n"<< Color::RESET;
+    cout << "\n" << Color::BOLD << Color::GREEN << "========= YOUR TRANSACTION HISTORY =========" << Color::RESET << "\n";
 
     if (rentalHistory.empty())
     {
-        cout << "| No previous records found.                               |\n";
+        cout << Color::INFO << "  No previous records found." << Color::RESET << endl;
     }
-
     else
     {
+        cout << "+--------------------------------------------------------------------------------+\n";
+        cout << "| " << left << setw(78) << "Activity Record" << " |\n";
+        cout << "+--------------------------------------------------------------------------------+\n";
         for (const string& record : rentalHistory)
         {
-            cout << "| - " << left << setw(53) << record << "|\n";
-        }
-    }
-    cout << Color::BOLD << Color::GREEN;
-    cout << "+==========================================================+\n"<< Color::RESET ;
-}
+            string coloredRecord = record;
+            if (record.find("Purchased") != string::npos) coloredRecord = Color::CYAN + record + Color::RESET;
+            else if (record.find("Started") != string::npos) coloredRecord = Color::YELLOW + record + Color::RESET;
+            else if (record.find("Returned") != string::npos) coloredRecord = Color::GREEN + record + Color::RESET;
 
+            cout << "| - " << left << setw(87) << coloredRecord << " |\n";
+        }
+        cout << "+--------------------------------------------------------------------------------+\n";
+    }
+}
 
 void Customer::addToHistory(const string& record)
 {
     rentalHistory.push_back(record);
 }
 
-
-
-
-#include "Validator.h"
-#include "Constants.h"
-
 /**
  * @brief Logic for renting a vehicle.
  */
-
-
 void Customer::rentVehicle(vector<Vehicle*>& fleet, FileHandler& fh)
 {
     cout << Color::BOLD << Color::GREEN;
@@ -92,17 +84,17 @@ void Customer::rentVehicle(vector<Vehicle*>& fleet, FileHandler& fh)
 
     // Show available vehicles first
     cout << "\n" << Color::INFO << "Currently Available Vehicles:" << Color::RESET << "\n";
-    cout << "+-------+-------------------+-------+-------+------------+------------+------------+\n";
-    cout << "| ID    | Model             | Year  | Cap.  | Rate       | Status     | Category   |\n";
-    cout << "+-------+-------------------+-------+-------+------------+------------+------------+\n";
+    cout << "+-------+-------------------+-------+-------+------------+------------+\n";
+    cout << "| ID    | Model             | Year  | Cap.  | Rate       | Category   |\n";
+    cout << "+-------+-------------------+-------+-------+------------+------------+\n";
     bool anyAvailable = false;
     for (Vehicle* v : fleet) {
         if (v->getStatus() == VehicleStatus::Available) {
-            v->displayRow();
+            v->displayRowSimple();
             anyAvailable = true;
         }
     }
-    cout << "+-------+-------------------+-------+-------+------------+------------+------------+\n";
+    cout << "+-------+-------------------+-------+-------+------------+------------+\n";
 
     if (!anyAvailable) {
         cout << Color::WARNING << "[SYSTEM] No vehicles are currently available for rent." << Color::RESET << endl;
@@ -157,13 +149,9 @@ bool Customer::processRental(string id, vector<Vehicle*>& fleet, FileHandler& fh
     return false;
 }
 
-
-
 /**
  * @brief Logic for returning a vehicle.
  */
-
-
 void Customer::returnVehicle(vector<Vehicle*>& fleet, FileHandler& fh)
 {
     string id;
@@ -187,7 +175,6 @@ void Customer::returnVehicle(vector<Vehicle*>& fleet, FileHandler& fh)
             // 1. Generate Inspection Report
             InspectionReport report(v, this);
             report.fillReport();
-            fh.saveInspection(report); 
 
             // 2. Finalize Billing
             int days = InputHandler::getInt("Enter total days used", 1, 365, true);
@@ -201,41 +188,50 @@ void Customer::returnVehicle(vector<Vehicle*>& fleet, FileHandler& fh)
             float damageFee = report.getDamageFee();
             float totalBill = discountedBill + damageFee;
 
-            cout << "\n" << Color::WARNING << "[CONFIRM] Final Total Bill will be " << Pricing::CURRENCY << fixed << setprecision(2) << totalBill << ". Finalize return? (Y/N): " << Color::RESET;
+            cout << "\n" << Color::BOLD << Color::YELLOW << "[!] PENDING CHARGES: " << Pricing::CURRENCY << fixed << setprecision(2) << totalBill << Color::RESET << "\n";
+            cout << Color::WARNING << "[CONFIRM] Finalize return and process payment? (Y/N): " << Color::RESET;
             if (InputHandler::getChar("", "YN") == 'N') {
                 cout << Color::INFO << "[SYSTEM] Return process suspended." << Color::RESET << endl;
                 return;
             }
 
             v->setStatus(VehicleStatus::Available); 
+            fh.saveInspection(report); 
 
-            // Log Transaction immediately
+            // Log Transaction
             fh.appendTransaction("RENT_RETURN", v->getID(), this->getID(), totalBill, report.getDate());
 
-            cout << Color::BOLD << Color::GREEN;
             cout << "\n";
-            cout << "+======================================================+\n";
+            cout << Color::BOLD << Color::GREEN << "+======================================================+\n";
             cout << "|                  FINAL RENTAL RECEIPT                |\n";
-            cout << "+======================================================+\n"<< Color::RESET;
+            cout << "+======================================================+\n" << Color::RESET;
             cout << "| Vehicle          :  " << left << setw(33) << v->getModel() << "|\n";
             cout << "| Duration         :  " << left << setw(28) << days << " days |" << "\n";
             cout << "+------------------------------------------------------+\n";
             cout << "| Base Rental Cost :  " << Pricing::CURRENCY << left << setw(32-Pricing::CURRENCY.length()) << fixed << setprecision(2) << baseBill << "|\n";
+            
             if (discountAmt > 0) {
-                cout << "| Promo Discount   : -" << Pricing::CURRENCY << left << setw(31-Pricing::CURRENCY.length()) << discountAmt << " (" << (int)(discountPerc * 100) << "%)" << "|\n";
+                cout << Color::YELLOW << "| Promo Discount   : -" << Pricing::CURRENCY << left << setw(31-Pricing::CURRENCY.length()) << discountAmt << " (" << (int)(discountPerc * 100) << "%)" << Color::RESET << "|\n";
+            } else {
+                cout << "| Promo Discount   :  " << left << setw(36) << "None Applied" << "|\n";
             }
-            cout << "| Damage Fees      :  " << Pricing::CURRENCY << left << setw(32-Pricing::CURRENCY.length()) << damageFee << "|\n";
+
+            if (damageFee > 0) {
+                cout << Color::ERR << "| Damage Fees      :  " << Pricing::CURRENCY << left << setw(32-Pricing::CURRENCY.length()) << damageFee << Color::RESET << "|\n";
+            } else {
+                cout << Color::GREEN << "| Damage Fees      :  " << left << setw(36) << "None (Clear)" << Color::RESET << "|\n";
+            }
+
             cout << "+------------------------------------------------------+\n";
-            cout << "| TOTAL AMOUNT     :  " << Pricing::CURRENCY << left << setw(32-Pricing::CURRENCY.length()) << totalBill << "|\n";
-            cout << "+======================================================+\n";
-            cout << "|           [SUCCESS] Vehicle Returned                 |\n";
-            cout << "+======================================================+\n\n";
+            cout << Color::BOLD << Color::CYAN << "| TOTAL AMOUNT     :  " << Pricing::CURRENCY << left << setw(32-Pricing::CURRENCY.length()) << totalBill << Color::RESET << "|\n";
+            cout << Color::BOLD << Color::GREEN << "+======================================================+\n";
+            cout << "|           [SUCCESS] Transaction Finalized            |\n";
+            cout << "+======================================================+\n\n" << Color::RESET;
 
             addToHistory("Returned " + v->getModel() + " (Final Bill: " + Pricing::CURRENCY + to_string((int)totalBill) + ") on " + report.getDate());
+            cout << Color::SUCCESS << "[SYSTEM] Vehicle returned to fleet successfully." << Color::RESET << endl;
             return;
         }
     }
-    cout << Color::ERR;
-    cout << "[ERROR] Vehicle ID not found in system." << Color::RESET << endl;
+    cout << Color::ERR << "[ERROR] Vehicle ID not found in system." << Color::RESET << endl;
 }
-

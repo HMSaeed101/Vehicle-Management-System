@@ -18,6 +18,8 @@ public:
     float calculateCost(int hours) override;
     void displayInfo() override;
     void displayRow() const override;
+    void displayRowSimple() const override;
 };
+
 
 #endif // ECONOMY_H

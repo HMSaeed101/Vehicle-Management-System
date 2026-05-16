@@ -21,7 +21,7 @@ string Economy::getCategory() const {
 
 float Economy::calculateCost(int days)
 {
-    float total = getRentalRate() * days;
+    float baseTotal = (getRentalRate() * Pricing::ECONOMY_MULTIPLIER) * days;
     float discount = 0.0f;
 
     if (days >= Pricing::TIER_2_DAYS) {
@@ -30,8 +30,9 @@ float Economy::calculateCost(int days)
         discount = Pricing::TIER_1_DISCOUNT;
     }
 
-    return total * (1.0f - discount);
+    return baseTotal * (1.0f - discount);
 }
+
 
 /**
  * @brief Displays economy-specific info.
@@ -78,4 +79,18 @@ void Economy::displayRow() const
          << "| " << left << category
          << " |" << endl;
 }
+
+void Economy::displayRowSimple() const
+{
+    string category = Color::GREEN + "Economy   " + Color::RESET;
+
+    cout << "| " << left << setw(6) << getID()
+         << "| " << left << setw(18) << getModel()
+         << "| " << left << setw(6) << getYear()
+         << "| " << left << setw(6) << getCapacity()
+         << "| " << Pricing::CURRENCY << left << setw(10-Pricing::CURRENCY.length()) << fixed << setprecision(2) << getRentalRate()
+         << "| " << left << category
+         << " |" << endl;
+}
+
 

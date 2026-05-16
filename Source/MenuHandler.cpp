@@ -136,15 +136,16 @@ void MenuHandler::adminSession(User* currentUser)
     do {
         admin->showDashboard(fleet);
         admin->showMenu();
-        int choice = InputHandler::getInt("Selection", 1, 4, true); 
+        int choice = InputHandler::getInt("Selection", 1, 5, true); 
 
         if (choice == InputHandler::CANCEL_INT) { logout = true; break; }
 
         switch (choice) {
             case 1: admin->addVehicle(fleet); break;
             case 2: admin->removeVehicle(fleet); break;
-            case 3: admin->salePurchaseModule(fleet, users, fh); break;
-            case 4: admin->viewAllRecords(fleet, users); break;
+            case 3: admin->removeUser(users, fh); break;
+            case 4: admin->salePurchaseModule(fleet, users, fh); break;
+            case 5: admin->viewAllRecords(fleet, users); break;
             default: cout << Color::ERR << "Invalid selection." << Color::RESET << endl;
         }
         if (!logout) InputHandler::waitForEnter();
@@ -199,6 +200,7 @@ void MenuHandler::handleSearch(SearchEngine& engine, vector<Vehicle*>& fleet, Cu
         choice = InputHandler::getInt("Selection", 1, 4, true);
 
         vector<Vehicle*> results;
+        bool onlyAvailFilter = false;
         if (choice == InputHandler::CANCEL_INT) break;
 
         if (choice == 1) results = fleet;
@@ -249,6 +251,7 @@ void MenuHandler::handleSearch(SearchEngine& engine, vector<Vehicle*>& fleet, Cu
             
             cout << "\nStep 3: Availability Check\n";
             bool onlyAvail = (InputHandler::getChar("Only show available vehicles? (Y/N)", "YN") == 'Y');
+            onlyAvailFilter = onlyAvail;
             results = engine.smartSearch(type, maxPrice, onlyAvail);
         }
 
@@ -259,11 +262,20 @@ void MenuHandler::handleSearch(SearchEngine& engine, vector<Vehicle*>& fleet, Cu
                 InputHandler::waitForEnter();
             } else {
                 cout << "\n" << Color::INFO << "[SYSTEM] Found " << results.size() << " vehicles matching your criteria:" << Color::RESET << "\n";
-                cout << "+-------+-------------------+-------+-------+------------+------------+------------+\n";
-                cout << "| ID    | Model             | Year  | Cap.  | Rate       | Status     | Category   |\n";
-                cout << "+-------+-------------------+-------+-------+------------+------------+------------+\n";
-                for (Vehicle* v : results) v->displayRow();
-                cout << "+-------+-------------------+-------+-------+------------+------------+------------+\n";
+                
+                if (onlyAvailFilter) {
+                    cout << "+-------+-------------------+-------+-------+------------+------------+\n";
+                    cout << "| ID    | Model             | Year  | Cap.  | Rate       | Category   |\n";
+                    cout << "+-------+-------------------+-------+-------+------------+------------+\n";
+                    for (Vehicle* v : results) v->displayRowSimple();
+                    cout << "+-------+-------------------+-------+-------+------------+------------+\n";
+                } else {
+                    cout << "+-------+-------------------+-------+-------+------------+------------+------------+\n";
+                    cout << "| ID    | Model             | Year  | Cap.  | Rate       | Status     | Category   |\n";
+                    cout << "+-------+-------------------+-------+-------+------------+------------+------------+\n";
+                    for (Vehicle* v : results) v->displayRow();
+                    cout << "+-------+-------------------+-------+-------+------------+------------+------------+\n";
+                }
 
                 if (customer && fh) {
                     string rentID = InputHandler::getString("\nEnter Vehicle ID to RENT (or press Enter to continue)", true, false, true);

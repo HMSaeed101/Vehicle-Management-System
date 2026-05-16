@@ -47,9 +47,11 @@ public:
     virtual string getCategory() const = 0;
     virtual float calculateCost(int days) = 0;
     virtual void displayInfo() = 0;
-    virtual void displayRow() const = 0; // New method for tabular view
+    virtual void displayRow() const = 0; // Tabular view with status
+    virtual void displayRowSimple() const = 0; // Tabular view without status column
 
     // Discount Logic
+
     float calculateDiscountedCost(int days);
     float getDiscountPercentage(int days) const;
 };

@@ -8,14 +8,15 @@
 
 namespace Pricing
 {
-    // Category Multipliers (Reflecting Pakistani Market Premiums)
-    const float LUXURY_MULTIPLIER = 1.80f; // Luxury cars (Civic) have higher premiums in PK
-    const float SUV_MULTIPLIER    = 1.40f; // SUVs (Fortuner/Sportage) are highly valued
-    const float VAN_MULTIPLIER    = 1.25f; // Hiace/APV rates
-    const float ECONOMY_MULTIPLIER = 1.00f; // Alto/Cultus base rates
+    // Category Multipliers (Scaling base rates from file to realistic PKR)
+    const float LUXURY_MULTIPLIER = 500.0f; // Luxury cars (e.g., Civic/Accord)
+    const float SUV_MULTIPLIER    = 350.0f; // SUVs (e.g., Fortuner/Sportage)
+    const float VAN_MULTIPLIER    = 250.0f; // Vans/Buses (e.g., Hiace)
+    const float ECONOMY_MULTIPLIER = 200.0f; // Economy cars (e.g., Alto/Cultus)
 
     // Currency Label
     const std::string CURRENCY = "Rs. ";
+
 
     // Discount Tiers
     const int TIER_1_DAYS = 4;

@@ -31,7 +31,9 @@ public:
     void addVehicle(std::vector<Vehicle*>& fleet);
 
     void removeVehicle(std::vector<Vehicle*>& fleet);
+    void removeUser(std::vector<User*>& users, FileHandler& fh);
     void salePurchaseModule(std::vector<Vehicle*>& fleet, std::vector<User*>& users, FileHandler& fh);
+
     void viewAllRecords(const std::vector<Vehicle*>& fleet, const std::vector<User*>& users);
 };
 

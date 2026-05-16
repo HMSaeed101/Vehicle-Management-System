@@ -14,6 +14,8 @@ public:
     float calculateCost(int days) override;
     void displayInfo() override;
     void displayRow() const override;
+    void displayRowSimple() const override;
 };
+
 
 #endif // VAN_H

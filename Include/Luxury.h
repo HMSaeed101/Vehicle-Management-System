@@ -24,6 +24,8 @@ class Luxury : public Vehicle
     float calculateCost(int hours) override;
     void displayInfo() override;
     void displayRow() const override;
+    void displayRowSimple() const override;
 };
+
 
 #endif // LUXURY_H

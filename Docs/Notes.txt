@@ -1,5 +1,24 @@
 ### Observations ###
 
+1. Must restrict user to not have the same username, or ID as used before in the system.
+
+2. Full Name should be 3 or moe characters logging
+
+3. Validation Checks for ID making, is it three character, or alphanumeric, alpha only....
+
+4. 
+
+
+
+
+
+
+
+
+
+=================================================
+
+
 1. When renting a vehicle, a Dashboard shows up for list of available vehicles, there is this heading Status Available that has no meaning to be here.
 
 2. The Year feature of Car Model is of No use , its just there with no Utility

@@ -80,3 +80,17 @@ void Luxury::displayRow() const
          << " |" << endl;
 }
 
+void Luxury::displayRowSimple() const
+{
+    string category = Color::MAGENTA + "Luxury    " + Color::RESET;
+
+    cout << "| " << left << setw(6) << getID()
+         << "| " << left << setw(18) << getModel()
+         << "| " << left << setw(6) << getYear()
+         << "| " << left << setw(6) << getCapacity()
+         << "| " << Pricing::CURRENCY << left << setw(10-Pricing::CURRENCY.length()) << fixed << setprecision(2) << getRentalRate()
+         << "| " << left << category
+         << " |" << endl;
+}
+
+

@@ -44,9 +44,8 @@ void InspectionReport::fillReport() {
     }
     
     evaluationRemarks = InputHandler::getString("Enter Additional Evaluator Remarks");
-
-    cout << Color::SUCCESS << "[SYSTEM] Inspection report completed successfully." << Color::RESET << endl;
 }
+
 
 float InspectionReport::getDamageFee() const
 {

@@ -71,3 +71,17 @@ void Van::displayRow() const
          << " |" << endl;
 }
 
+void Van::displayRowSimple() const
+{
+    string category = Color::BLUE + "Van/Bus   " + Color::RESET;
+
+    cout << "| " << left << setw(6) << getID()
+         << "| " << left << setw(18) << getModel()
+         << "| " << left << setw(6) << getYear()
+         << "| " << left << setw(6) << getCapacity()
+         << "| " << Pricing::CURRENCY << left << setw(10-Pricing::CURRENCY.length()) << fixed << setprecision(2) << getRentalRate()
+         << "| " << left << category
+         << " |" << endl;
+}
+
+

@@ -50,12 +50,50 @@ void Admin::showMenu()
     cout << "|                                                          |\n";
     cout << "|   [1]  Add New Vehicle                                   |\n";
     cout << "|   [2]  Remove Vehicle                                    |\n";
-    cout << "|   [3]  Sale / Purchase Module                            |\n";
-    cout << "|   [4]  View All Records                                  |\n";
+    cout << "|   [3]  Delete Customer Account                           |\n";
+    cout << "|   [4]  Sale / Purchase Module                            |\n";
+    cout << "|   [5]  View All Records                                  |\n";
     cout << "|   [Z]  Logout                                            |\n";
     cout << "|                                                          |\n";
     cout << Color::RED << "+----------------------------------------------------------+\n\n" << Color::RESET;
 }
+
+void Admin::removeUser(vector<User*>& users, FileHandler& fh)
+{
+    string id;
+    cout << "\n" << Color::BOLD << Color::RED << "========= DELETE CUSTOMER ACCOUNT =========" << Color::RESET << endl;
+    id = InputHandler::getString("Enter User ID to remove", false, true);
+    if (id == InputHandler::CANCEL_STR) return;
+
+    if (id == this->getID()) {
+        cout << Color::ERR << "[ERROR] You cannot delete your own admin account." << Color::RESET << endl;
+        return;
+    }
+
+    for (auto it = users.begin(); it != users.end(); ++it) {
+        if ((*it)->getID() == id) {
+            if ((*it)->getID()[0] == 'A') {
+                cout << Color::ERR << "[ERROR] Security Breach: Admins cannot delete other Admins." << Color::RESET << endl;
+                return;
+            }
+
+            cout << Color::WARNING << "[CONFIRM] Are you sure you want to PERMANENTLY delete account: " << (*it)->getName() << " (ID: " << id << ")? (Y/N): " << Color::RESET;
+            if (InputHandler::getChar("", "YN") == 'N') {
+                cout << Color::INFO << "[SYSTEM] Deletion cancelled." << Color::RESET << endl;
+                return;
+            }
+
+            cout << "[SYSTEM] Purging user data...\n";
+            delete *it;
+            users.erase(it);
+            fh.saveUsers(users); // Persist immediately
+            cout << Color::SUCCESS << "[SUCCESS] User account has been removed from the system." << Color::RESET << endl;
+            return;
+        }
+    }
+    cout << Color::ERR << "[ERROR] User ID not found." << Color::RESET << endl;
+}
+
 
 
 /**
