@@ -25,16 +25,16 @@ The Vehicle Management System is a full-featured platform designed for managing 
 
 ## Key Features
 
-- **🚗 Vehicle Inventory Management** – Add, remove, and track vehicles with real-time availability status (Available, Rented, Sold)
-- **💳 Rental System** – Complete rental workflow with dynamic pricing, duration tracking, and automatic cost calculation
+- **🚗 Vehicle Inventory Management** – Add, remove, and track vehicles
+- **💳 Rental System** – With dynamic pricing, duration tracking, and automatic cost calculation
 - **🛒 Sales Module** – Process vehicle purchases with transaction recording and fleet status updates
 - **🔍 Advanced Search** – Multi-criteria filtering by category, price range, year, availability, and passenger capacity
-- **📋 Vehicle Inspections** – Post-rental condition assessments including fuel level, mileage, damage evaluation, and condition grading
-- **📍 Trip Planner** – Vehicle recommendations based on trip distance, budget constraints, and passenger requirements
-- **💰 Dynamic Pricing & Discounts** – Category-based rate multipliers with tiered discounts (10% for 4+ days, 20% for 8+ days)
+- **📋 Vehicle Inspections** – Post-rental assessments _ fuel level, mileage, damage evaluation, and condition grading
+- **📍 Trip Planner** – Recommendations based on trip distance, budget constraints, and passenger requirements
+- **💰 Dynamic Pricing & Discounts** – Category-based rate multipliers with tiered discounts
 - **👥 Dual-Role Authentication** – Separate admin and customer login systems with secure credentials
 - **📊 Comprehensive Reporting** – Admin dashboard, rental history tracking, transaction records, and inspection reports
-- **💾 Data Persistence** – All system data automatically saved to files (Vehicle.txt, Users.txt, Transactions.txt, Inspections.txt)
+- **💾 Data Persistence** – All system data automatically saved to files
 
 ---
 
@@ -46,14 +46,14 @@ The Vehicle Management System is a full-featured platform designed for managing 
             │      Manages menus, login, user sessions, workflows      │
             └──────────────────────┬───────────────────────────────────┘
                                    │
-                      ┌────────────┼──────────────────┐
-                      │            │                  │
-                 ┌────▼──────┐   ┌─▼──────────┐   ┌───▼────────────┐
+                      ┌────────────┼────────────────────┐
+                      │            │                    │
+                 ┌────▼──────┐   ┌─▼──────────┐   ┌─────▼──────────┐
                  │   Admin   │   │  Customer  │   │  SearchEngine  │
                  │  Session  │   │  Session   │   │  TripPlanner   │
                  └───────────┘   └────────────┘   └────────────────┘
-                      │             │                │
-                      │             └────────┬───────┘
+                      │             │                   │
+                      │             └────────┬──────────┘
                       │                      │
                       │                      │
                   ┌───▼──────────────┐    ┌──▼──────────────┐
