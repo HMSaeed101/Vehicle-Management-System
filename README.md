@@ -28,12 +28,11 @@ The Vehicle Management System is a full-featured platform designed for managing 
 - **🚗 Vehicle Inventory Management** – Add, remove, and track vehicles
 - **💳 Rental System** – With dynamic pricing, duration tracking, and automatic cost calculation
 - **🛒 Sales Module** – Process vehicle purchases with transaction recording and fleet status updates
-- **🔍 Advanced Search** – Multi-criteria filtering by category, price range, year, availability, and passenger capacity
+- **🔍 Advanced Search** – Multi-criteria filtering by category, price range, availability, and passenger capacity
 - **📋 Vehicle Inspections** – Post-rental assessments _ fuel level, mileage, damage evaluation, and condition grading
 - **📍 Trip Planner** – Recommendations based on trip distance, budget constraints, and passenger requirements
 - **💰 Dynamic Pricing & Discounts** – Category-based rate multipliers with tiered discounts
 - **👥 Dual-Role Authentication** – Separate admin and customer login systems with secure credentials
-- **📊 Comprehensive Reporting** – Admin dashboard, rental history tracking, transaction records, and inspection reports
 - **💾 Data Persistence** – All system data automatically saved to files
 
 ---
@@ -41,34 +40,34 @@ The Vehicle Management System is a full-featured platform designed for managing 
 ## System Architecture
 
 ```
-            ┌──────────────────────────────────────────────────────────┐
-            │           MenuHandler (UI Orchestration)                 │
-            │      Manages menus, login, user sessions, workflows      │
-            └──────────────────────┬───────────────────────────────────┘
-                                   │
-                      ┌────────────┼────────────────────┐
-                      │            │                    │
-                 ┌────▼──────┐   ┌─▼──────────┐   ┌─────▼──────────┐
-                 │   Admin   │   │  Customer  │   │  SearchEngine  │
-                 │  Session  │   │  Session   │   │  TripPlanner   │
-                 └───────────┘   └────────────┘   └────────────────┘
-                      │             │                   │
-                      │             └────────┬──────────┘
-                      │                      │
-                      │                      │
-                  ┌───▼──────────────┐    ┌──▼──────────────┐
-                  │  Admin Features  │    │  Transactions   │
-                  │ - Dashboard      │    │ - Rentals       │
-                  │ - Fleet CRUD     │    │ - Sales         │
-                  │ - User Manag     │    │ - Inspections   │
-                  └──────────────────┘    └─────────────────┘
+                        ┌──────────────────────────────────────────────────────────┐
+                        │           MenuHandler (UI Orchestration)                 │
+                        │      Manages menus, login, user sessions, workflows      │
+                        └──────────────────────┬───────────────────────────────────┘
+                                               │
+                                  ┌────────────┼────────────────────┐
+                                  │            │                    │
+                             ┌────▼──────┐   ┌─▼──────────┐   ┌─────▼──────────┐
+                             │   Admin   │   │  Customer  │   │  SearchEngine  │
+                             │  Session  │   │  Session   │   │  TripPlanner   │
+                             └───────────┘   └────────────┘   └────────────────┘
+                                  │             │                   │
+                                  │             └────────┬──────────┘
+                                  │                      │
+                                  │                      │
+                              ┌───▼──────────────┐    ┌──▼──────────────┐
+                              │  Admin Features  │    │  Transactions   │
+                              │ - Dashboard      │    │ - Rentals       │
+                              │ - Fleet CRUD     │    │ - Sales         │
+                              │ - User Manag     │    │ - Inspections   │
+                              └──────────────────┘    └─────────────────┘
 ```
 
 **Core Components:**
 - **FileHandler** – Persistent data layer; reads/writes all system data to text files
-- **Vehicle Hierarchy** – Abstract Vehicle class with specialized types (Economy, Luxury, SUV, Van)
+- **Vehicle Hierarchy** – Abstract Vehicle class with specialized types
 - **User Hierarchy** – Abstract User class with Admin and Customer implementations
-- **Transaction Modules** – RentalTransaction and SaleTransaction for tracking vehicle movements
+- **Transaction Modules** – RentalTransaction and SaleTransaction for tracking vehicles
 - **SearchEngine** – Multi-criteria filtering and advanced query execution
 - **InspectionReport** – Post-rental condition assessment and damage documentation
 
@@ -134,7 +133,7 @@ VehicleManagementSystem.exe
 |-------------|---------------|
 | **Language** | C++17 Standard |
 | **Compiler** | GCC (g++) with C++17 support |
-| **OS** | Windows (primary), Linux/macOS (with terminal modifications) |
+| **OS** | Windows (primary) |
 | **Memory** | ~50 MB (minimal requirements) |
 | **Disk Space** | ~5 MB (including data files) |
 | **Dependencies** | Standard C++ Library (STL) only |
@@ -145,35 +144,35 @@ VehicleManagementSystem.exe
 
 ```
 Vehicle Manag Sys/
-├── Include/                    # Header files (class definitions)
-│   ├── Admin.h                # Admin user role and features
-│   ├── Customer.h             # Customer user role and features
-│   ├── Vehicle.h              # Abstract vehicle base class
-│   ├── Economy.h, Luxury.h    # Vehicle category implementations
-│   ├── SUV.h, Van.h           #
-│   ├── RentalTransaction.h    # Rental workflow handling
-│   ├── SaleTransaction.h      # Sales workflow handling
-│   ├── InspectionReport.h     # Post-rental inspection logic
-│   ├── SearchEngine.h         # Multi-criteria vehicle search
-│   ├── TripPlanner.h          # Trip recommendation engine
-│   ├── FileHandler.h          # Data persistence layer
-│   ├── MenuHandler.h          # UI orchestration
+├── Include/                        # Header files (class definitions)
+│   ├── Admin.h                     # Admin user role and features
+│   ├── Customer.h                  # Customer user role and features
+│   ├── Vehicle.h                   # Abstract vehicle base class
+│   ├── Economy.h, Luxury.h         # Vehicle category implementations
+│   ├── SUV.h, Van.h                #
+│   ├── RentalTransaction.h         # Rental workflow handling
+│   ├── SaleTransaction.h           # Sales workflow handling
+│   ├── InspectionReport.h          # Post-rental inspection logic
+│   ├── SearchEngine.h              # Multi-criteria vehicle search
+│   ├── TripPlanner.h               # Trip recommendation engine
+│   ├── FileHandler.h               # Data persistence layer
+│   ├── MenuHandler.h               # UI orchestration
 │   └── [Other utility headers]
 │
-├── Source/                     # Implementation files (.cpp)
-│   ├── main.cpp               # Application entry point
-│   ├── Admin.cpp              # Admin implementation
-│   ├── Customer.cpp           # Customer implementation
+├── Source/                         # Implementation files (.cpp)
+│   ├── main.cpp                    # Application entry point
+│   ├── Admin.cpp                   # Admin implementation
+│   ├── Customer.cpp                # Customer implementation
 │   └── [Other .cpp files]
 │
-├── Data/                       # Persistent storage (text files)
-│   ├── Vehicle.txt            # Fleet inventory database
-│   ├── Users.txt              # User accounts database
-│   ├── Transactions.txt       # Transaction history
-│   └── Inspections.txt        # Inspection reports
+├── Data/                           # Persistent storage (text files)
+│   ├── Vehicle.txt                 # Fleet inventory database
+│   ├── Users.txt                   # User accounts database
+│   ├── Transactions.txt            # Transaction history
+│   └── Inspections.txt             # Inspection reports
 │
-├── build.bat                   # Windows build script
-└── README.md                   # This file
+├── build.bat                       # Windows build script
+└── README.md                       # This file
 ```
 
 ---
