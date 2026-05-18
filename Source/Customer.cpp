@@ -181,9 +181,9 @@ void Customer::returnVehicle(vector<Vehicle*>& fleet, FileHandler& fh)
             if (days == InputHandler::CANCEL_INT) return;
 
             float baseBill = v->calculateCost(days);
+            float discountedBill = v->calculateDiscountedCost(days);
+            float discountAmt = baseBill - discountedBill;
             float discountPerc = v->getDiscountPercentage(days);
-            float discountAmt = baseBill * discountPerc;
-            float discountedBill = baseBill - discountAmt;
 
             float damageFee = report.getDamageFee();
             float totalBill = discountedBill + damageFee;

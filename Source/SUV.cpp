@@ -19,16 +19,7 @@ string SUV::getCategory() const {
  */
 float SUV::calculateCost(int days)
 {
-    float baseTotal = (getRentalRate() * Pricing::SUV_MULTIPLIER) * days;
-    float discount = 0.0f;
-
-    if (days >= Pricing::TIER_2_DAYS) {
-        discount = Pricing::TIER_2_DISCOUNT;
-    } else if (days >= Pricing::TIER_1_DAYS) {
-        discount = Pricing::TIER_1_DISCOUNT;
-    }
-
-    return baseTotal * (1.0f - discount);
+    return (getRentalRate() * Pricing::SUV_MULTIPLIER) * days;
 }
 
 /**

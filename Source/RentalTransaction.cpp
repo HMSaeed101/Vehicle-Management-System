@@ -36,13 +36,13 @@ void RentalTransaction::setEndTime(string end, int days) {
 
 /**
  * @brief Calculates the bill using polymorphism.
- * Calls the vehicle's specific calculateCost method.
+ * Calls the vehicle's specific calculateDiscountedCost method.
  */
 float RentalTransaction::calculateBill()
 {
     if (vehicle)
     {
-        return vehicle->calculateCost(daysRented);
+        return vehicle->calculateDiscountedCost(daysRented);
     }
     return 0.0f;
 }

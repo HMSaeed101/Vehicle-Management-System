@@ -22,20 +22,7 @@ string Luxury::getLuxuryFeatures() const {
  */
 float Luxury::calculateCost(int days)
 {
-    float baseTotal = (getRentalRate() * Pricing::LUXURY_MULTIPLIER) * days;
-    float discount = 0.0f;
-
-    if (days >= Pricing::TIER_2_DAYS)
-    {
-        discount = Pricing::TIER_2_DISCOUNT;
-    }
-
-    else if (days >= Pricing::TIER_1_DAYS)
-    {
-        discount = Pricing::TIER_1_DISCOUNT;
-    }
-
-    return baseTotal * (1.0f - discount);
+    return (getRentalRate() * Pricing::LUXURY_MULTIPLIER) * days;
 }
 
 /**
