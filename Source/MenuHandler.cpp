@@ -13,6 +13,7 @@
 
 #include <iostream>
 #include <iomanip>
+#include <algorithm>
 
 using namespace std;
 
@@ -74,11 +75,15 @@ void MenuHandler::handleRegistration()
         return;
     }
 
-    while (true) {
-        id = InputHandler::getString("  > Customer ID (Starts with 'C')", false);
-        if (Validator::isValidID(id, 'C')) break;
-        cout << Color::ERR << "[ERROR] Customer ID must start with 'C' followed by digits." << Color::RESET << endl;
+    // --- AUTO ID GENERATION ---
+    int maxID = 1000; // Base ID
+    for (User* u : users) {
+        try {
+            int currentID = stoi(u->getID());
+            if (currentID > maxID) maxID = currentID;
+        } catch (...) { /* Skip non-numeric legacy IDs */ }
     }
+    id = to_string(maxID + 1);
 
     while (true) {
         phone = InputHandler::getString("  > Phone Number (e.g., 03XX-XXXXXXX)", false);
@@ -91,7 +96,8 @@ void MenuHandler::handleRegistration()
     cout << "\n" << Color::HEADER << "+----------------------------------------------------------+\n" << Color::RESET;
 
     users.push_back(new Customer(id, username, name, phone, password));
-    cout << Color::SUCCESS << "[SUCCESS] Account created! Please login." << Color::RESET << endl;
+    cout << Color::SUCCESS << "[SUCCESS] Account created! Your Unique ID is: " << Color::HIGHLIGHT << id << Color::RESET << endl;
+    cout << "  Please use your Username to login." << endl;
     InputHandler::waitForEnter();
 }
 
@@ -126,7 +132,7 @@ void MenuHandler::handleLogin()
         return;
     }
 
-    if (currentUser->getID()[0] == 'A') adminSession(currentUser);
+    if (currentUser->getRole() == "ADMIN") adminSession(currentUser);
     else customerSession(currentUser);
 }
 

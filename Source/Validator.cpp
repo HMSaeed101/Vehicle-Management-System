@@ -15,12 +15,10 @@ bool Validator::inRange(float value, float min, float max) { return value >= min
 bool Validator::isValidID(const string& id, char expectedPrefix)
 {
     if (id.empty()) return false;
-    if (expectedPrefix != '\0' && id[0] != expectedPrefix) return false;
-    
-    // Simple ID check: starts with letter, followed by digits
-    if (!isalpha(id[0])) return false;
-    for (size_t i = 1; i < id.length(); ++i) {
-        if (!isdigit(id[i])) return false;
+
+    // Strictly Numeric Check: All characters must be digits
+    for (char c : id) {
+        if (!isdigit(c)) return false;
     }
     return true;
 }

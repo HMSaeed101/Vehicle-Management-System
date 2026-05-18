@@ -22,6 +22,7 @@ public:
 
     // Polymorphic override for Customer menu
     void showMenu() override;
+    string getRole() const override { return "CUSTOMER"; }
 
     // Customer capabilities
     void viewRentalHistory();

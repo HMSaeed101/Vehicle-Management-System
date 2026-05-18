@@ -132,7 +132,7 @@ bool Customer::processRental(string id, vector<Vehicle*>& fleet, FileHandler& fh
             }
 
             // Generate Transaction
-            RentalTransaction* txn = new RentalTransaction("RTX-" + id, v, this, date, "10:00 AM");
+            RentalTransaction* txn = new RentalTransaction(id, v, this, date, "10:00 AM");
             txn->finalise();
 
             // Log Transaction immediately

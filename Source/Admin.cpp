@@ -73,7 +73,7 @@ void Admin::removeUser(vector<User*>& users, FileHandler& fh)
 
     for (auto it = users.begin(); it != users.end(); ++it) {
         if ((*it)->getID() == id) {
-            if ((*it)->getID()[0] == 'A') {
+            if ((*it)->getRole() == "ADMIN") {
                 cout << Color::ERR << "[ERROR] Security Breach: Admins cannot delete other Admins." << Color::RESET << endl;
                 return;
             }
@@ -113,8 +113,13 @@ void Admin::addVehicle(vector<Vehicle*>& fleet)
     if (type == 'Z') return;
 
     while (true) {
-        id = InputHandler::getString("Enter Vehicle ID (e.g., E001)", false, true);
+        id = InputHandler::getString("Enter Vehicle ID (Numeric)", false, true);
         if (id == InputHandler::CANCEL_STR) return;
+
+        if (!Validator::isValidID(id)) {
+            cout << Color::ERR << "[ERROR] Invalid format. Vehicle ID must be strictly numeric." << Color::RESET << endl;
+            continue;
+        }
 
         bool exists = false;
         for (Vehicle* v : fleet) if (v->getID() == id) { exists = true; break; }
@@ -292,10 +297,10 @@ void Admin::viewAllRecords(const vector<Vehicle*>& fleet, const vector<User*>& u
 
     cout << Color::NOTICE << "\n[REGISTERED USERS - " << users.size() << " Accounts]" << Color::RESET << "\n";
     cout << Color::TABLE_HEADER << "+----------+--------------------------+------------+\n" << Color::RESET;
-    cout << Color::TABLE_HEADER << "| User ID  | Name                     | Type       |\n" << Color::RESET;
+    cout << Color::TABLE_HEADER << "| User ID  | Name                     | Role       |\n" << Color::RESET;
     cout << Color::TABLE_HEADER << "+----------+--------------------------+------------+\n" << Color::RESET;
     for (User* u : users) {
-        string type = (u->getID()[0] == 'A' ? Color::RED + "Admin   " + Color::RESET : Color::HIGHLIGHT + "Customer" + Color::RESET);
+        string type = (u->getRole() == "ADMIN" ? Color::RED + "Admin   " + Color::RESET : Color::HIGHLIGHT + "Customer" + Color::RESET);
         cout << "| " << left << setw(9) << u->getID() << "| " << setw(25) << u->getName() << "| " << type << " |\n";
     }
     cout << "+----------+--------------------------+------------+\n";

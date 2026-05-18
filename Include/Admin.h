@@ -25,6 +25,7 @@ public:
 
     // Polymorphic override for Admin menu
     void showMenu() override;
+    string getRole() const override { return "ADMIN"; }
 
     // Administrative capabilities
     void showDashboard(const std::vector<Vehicle*>& fleet);

@@ -149,34 +149,18 @@ vector<User*> FileHandler::loadUsers()
         if (line.empty()) continue;
         vector<string> data = split(line, '|');
 
-        if (data.size() < 4) {
-            cerr << "[WARNING] Skipping malformed user data: " << line << endl;
-            continue;
-        }
+        // Format: ROLE|ID|USERNAME|NAME|PHONE|PASSWORD (6 fields)
+        if (data.size() < 6) continue;
 
-        char type = data[0][0];
+        string roleRaw = data[0];
         string id = data[1];
-        string username, name, phone, password;
+        string username = data[2];
+        string name = data[3];
+        string phone = data[4];
+        string password = data[5];
 
-        if (data.size() >= 6 && data[3].find('-') == string::npos) {
-            username = data[2];
-            name = data[3];
-            phone = data[4];
-            password = data[5];
-        } else {
-            username = id;
-            name = data[2];
-            phone = data[3];
-            password = (data.size() > 4) ? data[4] : "1111";
-        }
-
-        if (username == "Admin" && name.find('-') != string::npos) {
-             username = "admin";
-             name = "Admin User";
-        }
-
-        if (type == 'A') users.push_back(new Admin(id, username, name, phone, password));
-        else if (type == 'C') users.push_back(new Customer(id, username, name, phone, password));
+        if (roleRaw == "A" || roleRaw == "ADMIN") users.push_back(new Admin(id, username, name, phone, password));
+        else if (roleRaw == "C" || roleRaw == "CUSTOMER") users.push_back(new Customer(id, username, name, phone, password));
     }
 
     file.close();
@@ -190,10 +174,8 @@ void FileHandler::saveUsers(const vector<User*>& users)
     ofstream file(Config::USERS_FILE);
     for (User* u : users)
     {
-        char type = u->getID()[0];
-
-        // A for Admin, C for Customer
-        file << type << "|" << u->getID() << "|" << u->getUsername() << "|" << u->getName() << "|" << u->getPhone() << "|" << u->getPassword() << endl;
+        // New Format: ROLE|ID|USERNAME|NAME|PHONE|PASSWORD
+        file << u->getRole() << "|" << u->getID() << "|" << u->getUsername() << "|" << u->getName() << "|" << u->getPhone() << "|" << u->getPassword() << endl;
     }
     file.close();
 }
@@ -238,16 +220,18 @@ void FileHandler::loadTransactionsIntoHistory(vector<User*>& users)
 
         for (User* u : users)
         {
-            if (u->getID() == cID && u->getID()[0] == 'C')
+            if (u->getID() == cID)
             {
-                Customer* customer = static_cast<Customer*>(u);
-                string record;
-                if (type == "SALE") record = "Purchased Vehicle " + vID + " for " + Pricing::CURRENCY + amount + " on " + date;
-                else if (type == "RENT_START") record = "Started Rental of " + vID + " on " + date;
-                else if (type == "RENT_RETURN") record = "Returned " + vID + " (Bill: " + Pricing::CURRENCY + amount + ") on " + date;
+                Customer* customer = dynamic_cast<Customer*>(u);
+                if (customer) {
+                    string record;
+                    if (type == "SALE") record = "Purchased Vehicle " + vID + " for " + Pricing::CURRENCY + amount + " on " + date;
+                    else if (type == "RENT_START") record = "Started Rental of " + vID + " on " + date;
+                    else if (type == "RENT_RETURN") record = "Returned " + vID + " (Bill: " + Pricing::CURRENCY + amount + ") on " + date;
 
-                if (!record.empty()) {
-                    customer->addToHistory(record);
+                    if (!record.empty()) {
+                        customer->addToHistory(record);
+                    }
                 }
             }
         }

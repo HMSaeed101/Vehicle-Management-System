@@ -38,6 +38,7 @@ public:
 
     // Pure Virtual Function (Polymorphism - role-based menus)
     virtual void showMenu() = 0;
+    virtual string getRole() const = 0;
 };
 
 #endif // USER_H
