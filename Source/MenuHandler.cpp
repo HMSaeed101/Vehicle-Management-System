@@ -309,7 +309,7 @@ void MenuHandler::handleTripPlanning(TripPlanner& planner, vector<Vehicle*>& fle
 
     string src = InputHandler::getAlphaString("  > Starting Point");
     string dest = InputHandler::getAlphaString("  > Destination");
-    float dist = InputHandler::getFloat("  > Distance (km)", 1.0f, 5000.0f);
+    float dist = InputHandler::getFloat("  > Distance (km)", 1.0f, 20000.0f);
     float budget = InputHandler::getFloat("  > Your Budget (" + Pricing::CURRENCY + ")", 100.0f, 1000000.0f);
     int pax = InputHandler::getInt("  > Passenger Count", 1, 20);
 

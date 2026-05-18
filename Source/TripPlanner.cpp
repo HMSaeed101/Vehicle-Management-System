@@ -31,21 +31,24 @@ void TripPlanner::planTrip(string source, string destination, float distance, fl
     vector<Vehicle*> matches;
     for (Vehicle* v : fleet)
     {
-        // Filter: Available AND Capacity >= Passengers AND (Cost estimate for 1 day <= Budget)
-        if (v->getStatus() == VehicleStatus::Available && v->getCapacity() >= passengers && v->getRentalRate() <= budget)
+        // Use calculateCost(1) to get the REAL daily price (with multipliers applied)
+        float dailyPrice = v->calculateCost(1);
+
+        // Filter: Available AND Capacity >= Passengers AND (Realistic daily cost <= Budget)
+        if (v->getStatus() == VehicleStatus::Available && v->getCapacity() >= passengers && dailyPrice <= budget)
         {
             matches.push_back(v);
         }
     }
 
-    // 2. Sort Matches by Rental Rate (Ascending)
+    // 2. Sort Matches by REAL Daily Price (Ascending)
     sort
     (
         matches.begin(), matches.end(), [](Vehicle* a, Vehicle* b)
         {
-            return a->getRentalRate() < b->getRentalRate();
+            return a->calculateCost(1) < b->calculateCost(1);
         }
-    );
+    )
 
     // 3. Display Sorted Results
     if (matches.empty())
@@ -64,7 +67,7 @@ void TripPlanner::planTrip(string source, string destination, float distance, fl
             cout << "  "
                 << left << setw(20) << v->getModel()
                 << " [" << setw(6) << v->getID() << "]"
-                << "  " << Pricing::CURRENCY << setw(8) << fixed << setprecision(2) << v->getRentalRate() << "\n";
+                << "  " << Pricing::CURRENCY << setw(8) << fixed << setprecision(2) << v->calculateCost(1) << "\n";
         }
         cout << "\n  " << Color::SUCCESS << "[SYSTEM] Found " << matches.size() << " suitable options [Sorted by Price]." << Color::RESET << "\n";
     }
