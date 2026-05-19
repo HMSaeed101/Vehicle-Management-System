@@ -22,6 +22,15 @@ A comprehensive console-based vehicle rental and sales management platform built
 The Vehicle Management System is a full-featured platform designed for managing vehicle fleets across rental and sales operations. It supports multiple user roles (Admins and Customers), maintains persistent data storage, provides advanced vehicle search capabilities, and includes comprehensive transaction tracking with inspection reports. The system handles complex workflows including rentals with dynamic pricing, vehicle sales, trip planning assistance, and post-rental inspections.
 
 ---
+## ⚡ Live Interactive Demo
+
+You don't need to download this repository or configure a local C++ compiler to test it. You can interact with the live console interface directly in your web browser:
+
+👉 **[Run the Vehicle Management System Live on Replit](Phttps://replit.com/join/xxugsbxvfl-hmsaeed)**
+
+*(Once the Replit window loads, simply hit the big green **Run** button at the very top of the interface to initialize the console database menu!)*
+
+---
 
 ## Key Features
 
