@@ -26,10 +26,9 @@ The Vehicle Management System is a full-featured platform designed for managing 
 
 You don't need to download this repository or configure a local C++ compiler to test it. You can interact with the live console interface directly in your web browser:
 
-👉 **[Run the Vehicle Management System Live on Replit](Phttps://replit.com/join/xxugsbxvfl-hmsaeed)**
+👉 **[Run the Vehicle Management System Live on Replit](https://replit.com/@hmsaeed/Vehicle-Management-System)**
 
 *(Once the Replit window loads, simply hit the big green **Run** button at the very top of the interface to initialize the console database menu!)*
-
 ---
 
 ## Key Features
