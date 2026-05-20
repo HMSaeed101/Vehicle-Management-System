@@ -102,7 +102,7 @@ void Vehicle::displayInfo() {
     cout << "| Model         :  " << left << setw(36) << getModel() << "|\n";
     cout << "| Year          :  " << left << setw(36) << getYear() << "|\n";
     cout << "| Capacity      :  " << left << setw(27) << getCapacity() << " " << setw(10) << getCapacityUnit() << "|\n";
-    cout << "| Daily Rate    :  " << left << Pricing::CURRENCY << setw(35-Pricing::CURRENCY.length()) << getRentalRate() << "|\n";
+    cout << "| Daily Rate    :  " << left << Pricing::CURRENCY << setw(35-Pricing::CURRENCY.length()) << (int)getRentalRate() << "|\n";
     cout << "+------------------------------------------------------+\n";
 
     // Call hook for category-specific info (Promos or Features)
@@ -123,7 +123,7 @@ void Vehicle::displayRow() const
          << "| " << left << setw(18) << getModel()
          << "| " << left << setw(6) << getYear()
          << "| " << left << setw(6) << getCapacity()
-         << "| " << Pricing::CURRENCY << left << setw(10-Pricing::CURRENCY.length()) << fixed << setprecision(2) << getRentalRate()
+         << "| " << Pricing::CURRENCY << left << setw(10-Pricing::CURRENCY.length()) << (int)getRentalRate()
          << "| " << left << statusStr
          << "| " << left << getCategoryDisplay()
          << " |" << endl;
@@ -135,7 +135,7 @@ void Vehicle::displayRowSimple() const
          << "| " << left << setw(18) << getModel()
          << "| " << left << setw(6) << getYear()
          << "| " << left << setw(6) << getCapacity()
-         << "| " << Pricing::CURRENCY << left << setw(10-Pricing::CURRENCY.length()) << fixed << setprecision(2) << getRentalRate()
+         << "| " << Pricing::CURRENCY << left << setw(10-Pricing::CURRENCY.length()) << (int)getRentalRate()
          << "| " << left << getCategoryDisplay()
          << " |" << endl;
 }
